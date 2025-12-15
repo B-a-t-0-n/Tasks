@@ -1,0 +1,64 @@
+﻿namespace DirectoryService.Domain.Shared;
+
+public static class Errors
+{
+    public static class General
+    {
+        public static Error ValueIsInvalid(string? name = null)
+        {
+            var label = name ?? "value";
+            return Error.Validation("value.is.invalid", $"{label} is invalid");
+        }
+
+        public static Error NotFound(Guid? id = null)
+        {
+            var forId = id == null ? "" : $" for Id '{id}'";
+            return Error.Validation("record.not.found", $"record not found{forId}");
+        }
+
+        public static Error ValueIsRequired(string? name = null)
+        {
+            var label = name == null ? "" : " " + name + " ";
+            return Error.Validation("length.is.invalid", $"invalid{label}length");
+        }
+
+        public static Error AlreadyExist()
+        {
+            return Error.Validation("record.already.exist", "record already exist");
+        }
+
+        public static Error NotFound(string? name)
+        {
+            var label = name == null ? "" : " " + name + " ";
+            return Error.Validation("record.not.found", $"record not found{label}");
+        }
+
+        public static Error Timeout(string? description = null)
+        {
+            var label = description == null ? "" : " " + description + " ";
+
+            return Error.Validation("request.timeout", $"request timeout{description}");
+        }
+    }
+
+    public static class User
+    {
+        public static Error InvalidCredentials()
+        {
+            return Error.Validation("credentials.is.invalid", "credentials is invalid");
+        }
+    }
+
+    public static class Tokens
+    {
+        public static Error ExpiredToken()
+        {
+            return Error.Validation("token.is.expired", "token is expired");
+        }
+
+        public static Error InvalidToken()
+        {
+            return Error.Validation("token.is.invalid", "token is invalid");
+        }
+    }
+}
