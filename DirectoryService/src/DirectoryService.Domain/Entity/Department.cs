@@ -1,11 +1,10 @@
-﻿using CSharpFunctionalExtensions;
-using DirectoryService.Domain.Shared;
+﻿using DirectoryService.Domain.Shared;
 using DirectoryService.Domain.ValueObjects;
 using DirectoryService.Domain.ValueObjects.IDs;
 
 namespace DirectoryService.Domain.Entity;
 
-public sealed class Department : SoftDeletableEntity<DepartmentId>
+public sealed class Department : Shared.Entity<DepartmentId>, ISoftDeletableMutable
 {
     private readonly List<DepartmentLocation> _locations = [];
 
@@ -25,6 +24,9 @@ public sealed class Department : SoftDeletableEntity<DepartmentId>
 
     public IReadOnlyList<DepartmentPosition> Positions => _positions;
 
+    public bool IsDeleted { get; private set; } = false;
+
+    public DateTime? DeletionDate { get; private set; } = null;
     private Department(DepartmentId id) : base(id) { }
 
     public Department(
@@ -44,5 +46,20 @@ public sealed class Department : SoftDeletableEntity<DepartmentId>
         UpdatedAt = DateTime.UtcNow;
     }
 
-
+    public void MarkAsDeleted()
+    {
+        if (!IsDeleted)
+        {
+            IsDeleted = true;
+            DeletionDate = DateTime.UtcNow;
+        }
+    }
+    public void Restore()
+    {
+        if (IsDeleted)
+        {
+            IsDeleted = false;
+            DeletionDate = null;
+        }
+    }
 }

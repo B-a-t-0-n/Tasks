@@ -1,15 +1,37 @@
-var builder = WebApplication.CreateBuilder(args);
+﻿using DirectoryService.Web.Configuration;
+using Serilog;
+using System.Globalization;
 
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+Log.Logger = new LoggerConfiguration()
+    .MinimumLevel.Information()
+    .WriteTo.Console(formatProvider: CultureInfo.InvariantCulture)
+    .CreateLogger();
 
-var app = builder.Build();
-
-if (app.Environment.IsDevelopment())
+try
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
+    Log.Information("Starting web application");
+
+    var builder = WebApplication.CreateBuilder(args);
+
+    builder.Services.AddConfiguration(builder.Configuration);
+
+    builder.Services.AddLogging();
+
+    var app = builder.Build();
+
+    app.Configure();
+
+    app.Run();
+
+}
+catch (Exception ex)
+{
+    Log.Error(ex, "Unhandled exception");
+}
+finally
+{
+    await Log.CloseAndFlushAsync(); 
 }
 
-app.Run();
+
 

@@ -4,7 +4,7 @@ using DirectoryService.Domain.ValueObjects.IDs;
 
 namespace DirectoryService.Domain.Entity;
 
-public sealed class Location : SoftDeletableEntity<LocationId>
+public sealed class Location : Shared.Entity<LocationId>, ISoftDeletableMutable
 {
     private readonly List<DepartmentLocation> _departaments = [];
 
@@ -16,6 +16,10 @@ public sealed class Location : SoftDeletableEntity<LocationId>
 
     public IReadOnlyList<DepartmentLocation> Departments => _departaments;
 
+    public bool IsDeleted { get; private set; } = false;
+
+    public DateTime? DeletionDate { get; private set; } = null;
+
     private Location(LocationId id) : base(id) { }
 
     public Location(LocationId id, Address address, IANACode timezone) : base(id)
@@ -25,5 +29,22 @@ public sealed class Location : SoftDeletableEntity<LocationId>
 
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
+    }
+
+    public void MarkAsDeleted()
+    {
+        if (!IsDeleted)
+        {
+            IsDeleted = true;
+            DeletionDate = DateTime.UtcNow;
+        }
+    }
+    public void Restore()
+    {
+        if (IsDeleted)
+        {
+            IsDeleted = false;
+            DeletionDate = null;
+        }
     }
 }
