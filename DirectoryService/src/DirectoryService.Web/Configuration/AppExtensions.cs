@@ -1,4 +1,5 @@
 ﻿using DirectoryService.Web.EndpointsSettings;
+using Serilog;
 
 namespace DirectoryService.Web.Configuration;
 
@@ -6,6 +7,8 @@ public static class AppExtensions
 {
     public static IApplicationBuilder Configure(this WebApplication app)
     {
+        app.UseSerilogRequestLogging();
+
         app.UseSwagger();
         app.UseSwaggerUI();
 
