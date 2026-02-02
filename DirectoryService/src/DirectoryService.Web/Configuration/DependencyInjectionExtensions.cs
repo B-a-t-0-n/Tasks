@@ -1,5 +1,6 @@
-﻿using DirectoryService.Web.EndpointsSettings;
-using DirectoryService.Web.Features.Tests;
+﻿using DirectoryService.Application;
+using DirectoryService.Application.Features.Tests;
+using DirectoryService.Web.EndpointsSettings;
 using Serilog;
 using Serilog.Exceptions;
 namespace DirectoryService.Web.Configuration;
@@ -12,7 +13,7 @@ public static class DependencyInjectionExtensions
         return services
             .AddSerilogLogging(configuration)
             .AddSwaggerGen()
-            .AddEndpoints(typeof(DependencyInjectionExtensions).Assembly);
+            .AddEndpoints(typeof(IEndpoint).Assembly);
         ;
     }
 

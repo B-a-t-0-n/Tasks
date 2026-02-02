@@ -1,4 +1,7 @@
-﻿using Microsoft.Extensions.DependencyInjection.Extensions;
+﻿using DirectoryService.Application;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
 namespace DirectoryService.Web.EndpointsSettings;

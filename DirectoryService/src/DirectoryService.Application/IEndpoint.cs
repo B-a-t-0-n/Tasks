@@ -1,4 +1,6 @@
-﻿namespace DirectoryService.Web.EndpointsSettings;
+﻿using Microsoft.AspNetCore.Routing;
+
+namespace DirectoryService.Application;
 
 public interface IEndpoint
 {

@@ -1,6 +1,8 @@
-﻿using DirectoryService.Web.EndpointsSettings;
+﻿using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
 
-namespace DirectoryService.Web.Features.Tests;
+namespace DirectoryService.Application.Features.Tests;
 
 public class CreateEndpoint : IEndpoint
 {

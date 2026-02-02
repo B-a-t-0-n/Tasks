@@ -1,6 +1,15 @@
-version: '3.8'
-
 services:
+  directory-service:
+    container_name: tasks-directory-service
+    build:
+      context: ./DirectoryService
+      dockerfile: src/DirectoryService.Web/Dockerfile
+    ports:
+      - "9001:9001"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Docker
+      - ASPNETCORE_URLS=http://+:9001
+    restart: always
   seq:
     image: datalust/seq:latest
     container_name: tasks-seq
