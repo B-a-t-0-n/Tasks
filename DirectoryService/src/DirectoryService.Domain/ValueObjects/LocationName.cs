@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Shared;
 
 namespace DirectoryService.Domain.ValueObjects;
@@ -19,10 +19,10 @@ public class LocationName : ValueObject
     public static Result<LocationName, Error> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            return Errors.General.ValueIsInvalid("location name");
+            return GeneralErrors.ValueIsInvalid("location name");
 
         if (value.Length < MAX_LOW_NAME_LENGTH || value.Length > MAX_HIGHT_NAME_LENGTH)
-            return Errors.General.ValueIsRequired("location name");
+            return GeneralErrors.ValueIsRequired("location name");
 
         var name = new LocationName(value);
 

@@ -1,64 +1,80 @@
-﻿namespace DirectoryService.Domain.Shared;
+﻿using System.Text.Json.Serialization;
+
+namespace DirectoryService.Domain.Shared;
+
+public record ErrorMessage(string Code, string Message, string? InvalidField = null);
 
 public record Error
 {
-    public const string SEPARATOR = "||";
+    public IReadOnlyList<ErrorMessage> Messages { get; } = [];
 
-    private Error(string code, string message, ErrorType type, string? invalidField = null)
-    {
-        Code = code;
-        Message = message;
-        Type = type;
-        InvalidField = invalidField;
-    }
-
-    public string Code { get; }
-    public string Message { get; }
     public ErrorType Type { get; }
-    public string? InvalidField { get; } = null;
 
-    public static Error Validation(string code, string message, string? invalidField = null) =>
-        new Error(code, message, ErrorType.Validation, invalidField);
+    public bool IsCritical { get; }
 
-    public static Error NotFound(string code, string message) =>
-        new Error(code, message, ErrorType.NotFound);
-
-    public static Error Failure(string code, string message) =>
-        new Error(code, message, ErrorType.Failure);
-
-    public static Error Conflict(string code, string message) =>
-        new Error(code, message, ErrorType.Conflict);
-
-    public string Serialize()
+    [JsonConstructor]
+    private Error(IReadOnlyList<ErrorMessage> messages, ErrorType type, bool isCritical = false)
     {
-        return string.Join(SEPARATOR, Code, Message, Type);
+        Messages = messages.ToArray();
+        Type = type;
+        IsCritical = isCritical;
     }
 
-    public static Error Deserialize(string serialized)
+    private Error(IEnumerable<ErrorMessage> messages, ErrorType type, bool isCritical = false)
     {
-        var parts = serialized.Split(SEPARATOR);
-
-        if (parts.Length < 2)
-            throw new ArgumentException("invalid serialised format");
-
-        if (Enum.TryParse<ErrorType>(parts[2], out var type) == false) 
-        {
-            throw new ArgumentException("invalid serialised format");
-        }
-
-        return new Error(parts[0], parts[1], type);
+        Messages = messages.ToArray();
+        Type = type;
+        IsCritical = isCritical;
     }
 
-    public ErrorList ToErrorList()
-    {
-        return new([this]);
-    }
+    public string GetMessage() => string.Join(";", Messages.Select(m => m.ToString()));
+
+    public static Error Validation(string code, string message, string? invalidField = null, bool isCritical = false) =>
+        new([new ErrorMessage(code, message, invalidField)], ErrorType.VALIDATION, isCritical);
+
+    public static Error NotFound(string code, string message, string? invalidField = null) =>
+        new([new ErrorMessage(code, message, invalidField)], ErrorType.NOT_FOUND);
+
+    public static Error Failure(string code, string message, string? invalidField = null, bool isCritical = false) =>
+        new([new ErrorMessage(code, message, invalidField)], ErrorType.FAILURE, isCritical);
+
+    public static Error Conflict(string code, string message, string? invalidField = null) =>
+        new([new ErrorMessage(code, message, invalidField)], ErrorType.CONFLICT);
+
+    public static Error Authentication(string code, string message, string? invalidField = null) =>
+        new([new ErrorMessage(code, message, invalidField)], ErrorType.AUTHENTICATION);
+
+    public static Error Authorization(string code, string message, string? invalidField = null) =>
+        new([new ErrorMessage(code, message, invalidField)], ErrorType.AUTHORIZATION);
+
+    public static Error Validation(IEnumerable<ErrorMessage> messages, bool isCritical = false) =>
+        new(messages, ErrorType.VALIDATION, isCritical);
+
+    public static Error NotFound(params IEnumerable<ErrorMessage> messages) =>
+        new(messages, ErrorType.NOT_FOUND);
+
+    public static Error Failure(IEnumerable<ErrorMessage> messages, bool isCritical = false) =>
+        new(messages, ErrorType.FAILURE, isCritical);
+
+    public static Error Conflict(params IEnumerable<ErrorMessage> messages) =>
+        new(messages, ErrorType.CONFLICT);
+
+    public static Error Authentication(params IEnumerable<ErrorMessage> messages) =>
+        new(messages, ErrorType.AUTHENTICATION);
+
+    public static Error Authorization(params IEnumerable<ErrorMessage> messages) =>
+        new(messages, ErrorType.AUTHORIZATION);
+
+    public Error AsCritical() => new(Messages, Type, isCritical: true);
 }
 
+[JsonConverter(typeof(JsonStringEnumConverter))]
 public enum ErrorType
 {
-    Validation,
-    NotFound,
-    Failure,
-    Conflict
+    VALIDATION,
+    NOT_FOUND,
+    FAILURE,
+    CONFLICT,
+    AUTHENTICATION,
+    AUTHORIZATION,
 }

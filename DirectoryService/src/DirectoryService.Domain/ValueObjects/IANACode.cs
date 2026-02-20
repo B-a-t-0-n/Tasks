@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Shared;
 using System.Text.RegularExpressions;
 
@@ -19,15 +19,15 @@ public class IANACode : ValueObject
     public static Result<IANACode, Error> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            return Errors.General.ValueIsInvalid("IANA code");
+            return GeneralErrors.ValueIsInvalid("IANA code");
 
         var trimmed = value.Trim();
 
         if (trimmed.Length < MIN_LENGTH || trimmed.Length > MAX_LENGTH)
-            return Errors.General.ValueIsInvalid("IANA code");
+            return GeneralErrors.ValueIsInvalid("IANA code");
 
         if (!IanaRegex.IsMatch(trimmed))
-            return Errors.General.ValueIsInvalid("IANA code");
+            return GeneralErrors.ValueIsInvalid("IANA code");
 
         var parts = trimmed.Split('-');
         var normalizedParts = new List<string>

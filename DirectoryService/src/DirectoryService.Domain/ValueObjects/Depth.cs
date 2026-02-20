@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Shared;
 
 namespace DirectoryService.Domain.ValueObjects;
@@ -16,7 +16,7 @@ public class Depth : ValueObject
     public static Result<Depth, Error> Create(short value)
     {
         if (value < 0)
-            return Errors.General.ValueIsInvalid("depth");
+            return GeneralErrors.ValueIsInvalid("depth");
 
         var depth = new Depth(value);
 

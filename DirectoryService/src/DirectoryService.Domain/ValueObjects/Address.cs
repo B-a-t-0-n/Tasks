@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Shared;
 
 namespace DirectoryService.Domain.ValueObjects;
@@ -36,23 +36,23 @@ public class Address : ValueObject
         string country)
     {
         if (string.IsNullOrWhiteSpace(country))
-            return Errors.General.ValueIsRequired("Country");
+            return GeneralErrors.ValueIsRequired("Country");
 
         country = country.Trim();
         if (country.Length < 2 || country.Length > MAX_PART_LENGTH)
-            return Errors.General.ValueIsRequired("Country");
+            return GeneralErrors.ValueIsRequired("Country");
 
         if (!string.IsNullOrWhiteSpace(street) && (street.Length < 1 || street.Length > MAX_PART_LENGTH))
-            return Errors.General.ValueIsRequired("Street");
+            return GeneralErrors.ValueIsRequired("Street");
 
         if (!string.IsNullOrWhiteSpace(city) && (city.Length < 1 || city.Length > MAX_PART_LENGTH))
-            return Errors.General.ValueIsRequired("City");
+            return GeneralErrors.ValueIsRequired("City");
 
         if (!string.IsNullOrWhiteSpace(postalCode) && (postalCode.Length < 1 || postalCode.Length > 20))
-            return Errors.General.ValueIsRequired("Postal");
+            return GeneralErrors.ValueIsRequired("Postal");
 
         if (!string.IsNullOrWhiteSpace(region) && (region.Length < 1 || region.Length > MAX_PART_LENGTH))
-            return Errors.General.ValueIsRequired("Region");
+            return GeneralErrors.ValueIsRequired("Region");
 
         var totalLength = (street?.Length ?? 0) +
                           (city?.Length ?? 0) +
@@ -61,7 +61,7 @@ public class Address : ValueObject
                           country.Length;
 
         if (totalLength > MAX_LENGTH)
-            return Errors.General.ValueIsInvalid($"address");
+            return GeneralErrors.ValueIsInvalid($"address");
 
         return new Address(street, city, postalCode, region, country);
     }

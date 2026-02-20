@@ -1,4 +1,4 @@
-﻿using System.Text.RegularExpressions;
+using System.Text.RegularExpressions;
 using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Shared;
 
@@ -21,13 +21,13 @@ public class Identifier : ValueObject
     public static Result<Identifier, Error> Create(string value)
     {
         if (string.IsNullOrWhiteSpace(value))
-            return Errors.General.ValueIsInvalid("identifier");
+            return GeneralErrors.ValueIsInvalid("identifier");
 
         if (value.Length < MAX_LOW_NAME_LENGTH || value.Length > MAX_HIGHT_NAME_LENGTH)
-            return Errors.General.ValueIsRequired("identifier");
+            return GeneralErrors.ValueIsRequired("identifier");
 
         if (!Regex.IsMatch(value, @"^[A-Za-z]+$"))
-            return Errors.General.ValueIsInvalid("identifier");
+            return GeneralErrors.ValueIsInvalid("identifier");
 
         var name = new Identifier(value);
 

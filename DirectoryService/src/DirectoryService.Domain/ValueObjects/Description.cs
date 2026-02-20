@@ -1,4 +1,4 @@
-﻿using CSharpFunctionalExtensions;
+using CSharpFunctionalExtensions;
 using DirectoryService.Domain.Shared;
 
 namespace DirectoryService.Domain.ValueObjects;
@@ -21,7 +21,7 @@ public class Description : ValueObject
             return new Description(value);
 
         if (value.Length >= MAX_HIGHT_NAME_LENGTH)
-            return Errors.General.ValueIsRequired("");
+            return GeneralErrors.ValueIsRequired("");
 
         var description = new Description(value);
 
