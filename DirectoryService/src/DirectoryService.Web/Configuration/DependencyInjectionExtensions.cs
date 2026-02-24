@@ -1,4 +1,4 @@
-﻿using DirectoryService.Application;
+﻿using DirectoryService.Application.Endpoints;
 using DirectoryService.Application.Features.Tests;
 using DirectoryService.Web.EndpointsSettings;
 using Serilog;
