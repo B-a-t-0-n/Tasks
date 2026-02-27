@@ -1,0 +1,33 @@
+﻿using DirectoryService.Application.Endpoints;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Routing;
+using Microsoft.Extensions.Logging;
+
+namespace DirectoryService.Application.Features.Tests;
+
+public class CreateEndpoint : IEndpoint
+{
+    public void MapEndpoint(IEndpointRouteBuilder app)
+    {
+        app.MapPost("/create", async (CreateHandler handler) =>
+        {
+            await handler.Handle();
+        });
+    }
+}
+
+public sealed class CreateHandler
+{
+    private readonly ILogger<CreateHandler> _logger ;
+
+    public CreateHandler(ILogger<CreateHandler> logger)
+    {
+        _logger = logger;
+    }
+
+    public async Task Handle()
+    {
+        _logger.LogInformation("Handle method Create");
+        await Task.CompletedTask;
+    }
+}
