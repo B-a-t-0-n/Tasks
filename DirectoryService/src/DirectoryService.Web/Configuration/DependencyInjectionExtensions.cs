@@ -1,5 +1,6 @@
 ﻿using DirectoryService.Application.Endpoints;
 using DirectoryService.Application.Features.Tests;
+using DirectoryService.Infrastructure.Postgres;
 using DirectoryService.Web.EndpointsSettings;
 using Serilog;
 using Serilog.Exceptions;
@@ -10,8 +11,10 @@ public static class DependencyInjectionExtensions
     public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
         services.AddScoped<CreateHandler>();
+        services.AddInfrastructurePostgres(configuration);
         return services
             .AddSerilogLogging(configuration)
+            .AddEndpointsApiExplorer()
             .AddSwaggerGen()
             .AddEndpoints(typeof(IEndpoint).Assembly);
         ;

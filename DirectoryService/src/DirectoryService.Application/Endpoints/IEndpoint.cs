@@ -1,10 +1,4 @@
-﻿using CSharpFunctionalExtensions;
-using DirectoryService.Domain.Shared;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Http.Metadata;
-using Microsoft.AspNetCore.Routing;
-using System.Reflection;
+﻿using Microsoft.AspNetCore.Routing;
 
 namespace DirectoryService.Application.Endpoints;
 

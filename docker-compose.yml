@@ -1,4 +1,68 @@
 services:
+  directory-service:
+    build:
+      context: ./DirectoryService
+      dockerfile: src/DirectoryService.Web/Dockerfile
+    container_name: tasks-directory-service
+    ports:
+      - "5052:8080"
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+      ASPNETCORE_HTTP_PORTS: 8080
+      ConnectionStrings__Database: "Host=postgres;Port=5432;Database=directory_service_db;Username=postgres;Password=${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set};Include Error Detail=true"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      seq:
+        condition: service_started
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    container_name: tasks-postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: directory_service_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d directory_service_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pgadmin:
+    image: dpage/pgadmin4:latest
+    container_name: tasks-pgadmin
+    entrypoint:
+      - /bin/sh
+      - -c
+      - |
+        umask 077
+        printf '%s\n' "postgres:5432:directory_service_db:postgres:$${POSTGRES_PASSWORD}" > /var/lib/pgadmin/.pgpass
+        chown 5050:5050 /var/lib/pgadmin/.pgpass
+        chmod 600 /var/lib/pgadmin/.pgpass
+        exec /entrypoint.sh
+    ports:
+      - "5050:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@local.dev
+      PGADMIN_DEFAULT_PASSWORD: ${PGADMIN_DEFAULT_PASSWORD:?PGADMIN_DEFAULT_PASSWORD must be set}
+      PGADMIN_CONFIG_SERVER_MODE: "False"
+      PGADMIN_REPLACE_SERVERS_ON_STARTUP: "True"
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set}
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+      - ./pgadmin/servers.json:/pgadmin4/servers.json:ro
+    depends_on:
+      postgres:
+        condition: service_healthy
+    restart: unless-stopped
+
   seq:
     image: datalust/seq:latest
     container_name: tasks-seq
@@ -11,10 +75,12 @@ services:
       - seq-data:/data
     restart: unless-stopped
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:80/api/health"]
-      interval: 30s
+      test: ["CMD", "curl", "-f", "http://localhost:80/health"]
+      interval: 10s
       timeout: 10s
       retries: 3
 
 volumes:
+  postgres-data:
+  pgadmin-data:
   seq-data:

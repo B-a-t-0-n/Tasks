@@ -6,13 +6,13 @@ namespace DirectoryService.Domain.Entity;
 
 public sealed class Position : Shared.Entity<PositionId>, ISoftDeletableMutable
 {
-    private readonly List<DepartmentPosition> _departaments = [];
+    private readonly List<DepartmentPosition> _departments = [];
 
     public PositionName Name { get; private set; } = default!;
 
     public Description Description { get; private set; } = default!;
 
-    public IReadOnlyList<DepartmentPosition> Departments => _departaments;
+    public IReadOnlyList<DepartmentPosition> Departments => _departments;
 
     public bool IsDeleted { get; private set; } = false;
 

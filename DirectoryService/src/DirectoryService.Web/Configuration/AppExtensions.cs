@@ -1,5 +1,5 @@
 ﻿using DirectoryService.Web.EndpointsSettings;
-using EducationContentService.Web.Middlewares;
+using DirectoryService.Web.Middlewares;
 using Serilog;
 
 namespace DirectoryService.Web.Configuration;

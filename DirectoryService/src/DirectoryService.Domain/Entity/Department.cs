@@ -14,7 +14,7 @@ public sealed class Department : Shared.Entity<DepartmentId>, ISoftDeletableMuta
 
     public Identifier Identifier { get; private set; } = default!;
 
-    public Guid? ParentId { get; private set; }
+    public DepartmentId? ParentId { get; private set; }
 
     public string Path { get; private set; } = default!;
 
@@ -33,7 +33,7 @@ public sealed class Department : Shared.Entity<DepartmentId>, ISoftDeletableMuta
         DepartmentId id,
         DepartmentName name,
         Identifier identifier,
-        Guid? parentId, 
+        DepartmentId? parentId,
         string path,
         Depth depth) : base(id) 
     { 

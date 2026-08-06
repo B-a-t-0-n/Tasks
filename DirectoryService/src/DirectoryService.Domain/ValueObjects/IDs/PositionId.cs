@@ -11,7 +11,7 @@ public class PositionId : ComparableValueObject
 
     public Guid Value { get; }
 
-    public static PositionId NewAdminId() => new(Guid.NewGuid());
+    public static PositionId NewAdminId() => new(Guid.CreateVersion7());
 
     public static PositionId Empty() => new(Guid.Empty);
 

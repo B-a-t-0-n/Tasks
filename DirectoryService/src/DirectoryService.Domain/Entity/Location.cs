@@ -6,7 +6,7 @@ namespace DirectoryService.Domain.Entity;
 
 public sealed class Location : Shared.Entity<LocationId>, ISoftDeletableMutable
 {
-    private readonly List<DepartmentLocation> _departaments = [];
+    private readonly List<DepartmentLocation> _departments = [];
 
     public LocationName Name { get; private set; } = default!;
 
@@ -14,7 +14,7 @@ public sealed class Location : Shared.Entity<LocationId>, ISoftDeletableMutable
 
     public IANACode Timezone { get; private set; } = default!;
 
-    public IReadOnlyList<DepartmentLocation> Departments => _departaments;
+    public IReadOnlyList<DepartmentLocation> Departments => _departments;
 
     public bool IsDeleted { get; private set; } = false;
 
@@ -22,10 +22,11 @@ public sealed class Location : Shared.Entity<LocationId>, ISoftDeletableMutable
 
     private Location(LocationId id) : base(id) { }
 
-    public Location(LocationId id, Address address, IANACode timezone) : base(id)
+    public Location(LocationId id, LocationName name, Address address, IANACode timezone) : base(id)
     {
         Address = address;
         Timezone = timezone;
+        Name = name;
 
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;

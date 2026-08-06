@@ -29,7 +29,7 @@ public class ExceptionMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        _logger.LogError(exception, "Exception was thrown in education service");
+        _logger.LogError(exception, "Exception was thrown in directory service");
 
         (int statusCode, Error error) = exception switch
         {
