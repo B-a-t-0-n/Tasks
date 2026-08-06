@@ -8,7 +8,7 @@ public sealed class DepartmentLocation
 
     public DepartmentLocation(DepartmentId departmentId, LocationId locationId)
     {
-        Id = Guid.NewGuid();
+        Id = Guid.CreateVersion7();
         DepartmentId = departmentId;
         LocationId = locationId;
     }

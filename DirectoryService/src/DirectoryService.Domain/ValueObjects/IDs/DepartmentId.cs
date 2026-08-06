@@ -11,7 +11,7 @@ public class DepartmentId : ComparableValueObject
 
     public Guid Value { get; }
 
-    public static DepartmentId NewId() => new(Guid.NewGuid());
+    public static DepartmentId NewId() => new(Guid.CreateVersion7());
 
     public static DepartmentId Empty() => new(Guid.Empty);
 

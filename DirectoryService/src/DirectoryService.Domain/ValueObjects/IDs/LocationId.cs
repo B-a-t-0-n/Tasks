@@ -11,7 +11,7 @@ public class LocationId : ComparableValueObject
 
     public Guid Value { get; }
 
-    public static LocationId NewId() => new(Guid.NewGuid());
+    public static LocationId NewId() => new(Guid.CreateVersion7());
 
     public static LocationId Empty() => new(Guid.Empty);
 
