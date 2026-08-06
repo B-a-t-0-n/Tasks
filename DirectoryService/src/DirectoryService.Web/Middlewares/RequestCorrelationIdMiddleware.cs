@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Primitives;
 using Serilog.Context;
 
-namespace EducationContentService.Web.Middlewares;
+namespace DirectoryService.Web.Middlewares;
 
 public class RequestCorrelationIdMiddleware
 {

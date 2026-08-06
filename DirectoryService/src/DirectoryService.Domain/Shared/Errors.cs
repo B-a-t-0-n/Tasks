@@ -1,125 +1,125 @@
-namespace DirectoryService.Domain.Shared;
+п»їnamespace DirectoryService.Domain.Shared;
 
 public static class GeneralErrors
 {
     public static Error ValueIsInvalid(string? fieldName = null)
     {
         return fieldName == null
-            ? Error.Validation("value.is.invalid", "Некорректное значение")
-            : Error.Validation("value.is.invalid", $"Некорректное значение поля «{fieldName}»");
+            ? Error.Validation("value.is.invalid", "РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ")
+            : Error.Validation("value.is.invalid", $"РќРµРєРѕСЂСЂРµРєС‚РЅРѕРµ Р·РЅР°С‡РµРЅРёРµ РїРѕР»СЏ В«{fieldName}В»");
     }
 
     public static Error NotFound(Guid? id = null, string? entityName = null)
     {
-        string entity = entityName ?? "запись";
-        return Error.NotFound("record.not.found", $"Не удалось найти: {entity}");
+        string entity = entityName ?? "Р·Р°РїРёСЃСЊ";
+        return Error.NotFound("record.not.found", $"РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё: {entity}");
     }
 
     public static Error NotFoundBy(string fieldName, string value, string? entityName = null)
     {
-        string entity = entityName ?? "запись";
-        return Error.NotFound("record.not.found", $"Не удалось найти {entity} по {fieldName}: «{value}»");
+        string entity = entityName ?? "Р·Р°РїРёСЃСЊ";
+        return Error.NotFound("record.not.found", $"РќРµ СѓРґР°Р»РѕСЃСЊ РЅР°Р№С‚Рё {entity} РїРѕ {fieldName}: В«{value}В»");
     }
 
     public static Error ValueIsRequired(string? fieldName = null)
     {
         return fieldName == null
-            ? Error.Validation("value.is.required", "Обязательное поле не заполнено")
-            : Error.Validation("value.is.required", $"Поле «{fieldName}» обязательно для заполнения");
+            ? Error.Validation("value.is.required", "РћР±СЏР·Р°С‚РµР»СЊРЅРѕРµ РїРѕР»Рµ РЅРµ Р·Р°РїРѕР»РЅРµРЅРѕ")
+            : Error.Validation("value.is.required", $"РџРѕР»Рµ В«{fieldName}В» РѕР±СЏР·Р°С‚РµР»СЊРЅРѕ РґР»СЏ Р·Р°РїРѕР»РЅРµРЅРёСЏ");
     }
 
     public static Error LengthIsInvalid(string? fieldName = null, int? min = null, int? max = null)
     {
-        string label = fieldName != null ? $"Поле «{fieldName}»" : "Поле";
+        string label = fieldName != null ? $"РџРѕР»Рµ В«{fieldName}В»" : "РџРѕР»Рµ";
 
         if (min.HasValue && max.HasValue)
-            return Error.Validation("length.is.invalid", $"{label}: допустимая длина от {min} до {max} символов");
+            return Error.Validation("length.is.invalid", $"{label}: РґРѕРїСѓСЃС‚РёРјР°СЏ РґР»РёРЅР° РѕС‚ {min} РґРѕ {max} СЃРёРјРІРѕР»РѕРІ");
 
         if (min.HasValue)
-            return Error.Validation("length.is.invalid", $"{label}: минимальная длина {min} символов");
+            return Error.Validation("length.is.invalid", $"{label}: РјРёРЅРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° {min} СЃРёРјРІРѕР»РѕРІ");
 
         if (max.HasValue)
-            return Error.Validation("length.is.invalid", $"{label}: максимальная длина {max} символов");
+            return Error.Validation("length.is.invalid", $"{label}: РјР°РєСЃРёРјР°Р»СЊРЅР°СЏ РґР»РёРЅР° {max} СЃРёРјРІРѕР»РѕРІ");
 
-        return Error.Validation("length.is.invalid", $"{label}: недопустимая длина");
+        return Error.Validation("length.is.invalid", $"{label}: РЅРµРґРѕРїСѓСЃС‚РёРјР°СЏ РґР»РёРЅР°");
     }
 
     public static Error AlreadyExists(string? entityName = null, string? value = null)
     {
-        string entity = entityName ?? "Запись";
+        string entity = entityName ?? "Р—Р°РїРёСЃСЊ";
 
         if (!string.IsNullOrEmpty(value))
-            return Error.Conflict("record.already.exists", $"{entity} «{value}» уже существует");
+            return Error.Conflict("record.already.exists", $"{entity} В«{value}В» СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
 
-        return Error.Conflict("record.already.exists", $"{entity} уже существует");
+        return Error.Conflict("record.already.exists", $"{entity} СѓР¶Рµ СЃСѓС‰РµСЃС‚РІСѓРµС‚");
     }
 
     public static Error ConcurrencyConflict()
     {
-        return Error.Conflict("concurrency.conflict", "Данные изменены другим пользователем");
+        return Error.Conflict("concurrency.conflict", "Р”Р°РЅРЅС‹Рµ РёР·РјРµРЅРµРЅС‹ РґСЂСѓРіРёРј РїРѕР»СЊР·РѕРІР°С‚РµР»РµРј");
     }
 
     public static Error UniqueConstraintViolation(string? fieldName = null)
     {
         string field = fieldName != null ? $" ({fieldName})" : string.Empty;
-        return Error.Conflict("unique.constraint.violation", $"Значение{field} должно быть уникальным");
+        return Error.Conflict("unique.constraint.violation", $"Р—РЅР°С‡РµРЅРёРµ{field} РґРѕР»Р¶РЅРѕ Р±С‹С‚СЊ СѓРЅРёРєР°Р»СЊРЅС‹Рј");
     }
 
     public static Error ForeignKeyViolation(string? fieldName = null)
     {
-        string field = fieldName ?? "Связанная запись";
-        return Error.Conflict("foreign.key.violation", $"{field} используется в других данных");
+        string field = fieldName ?? "РЎРІСЏР·Р°РЅРЅР°СЏ Р·Р°РїРёСЃСЊ";
+        return Error.Conflict("foreign.key.violation", $"{field} РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РІ РґСЂСѓРіРёС… РґР°РЅРЅС‹С…");
     }
 
     public static Error OperationCancelled()
     {
-        return Error.Failure("operation.cancelled", "Операция отменена");
+        return Error.Failure("operation.cancelled", "РћРїРµСЂР°С†РёСЏ РѕС‚РјРµРЅРµРЅР°");
     }
 
     public static Error DatabaseError()
     {
-        return Error.Failure("database.error", "Ошибка базы данных");
+        return Error.Failure("database.error", "РћС€РёР±РєР° Р±Р°Р·С‹ РґР°РЅРЅС‹С…");
     }
 
     public static Error Failure(string? message = null)
     {
-        return Error.Failure("server.failure", message ?? "Ошибка сервера");
+        return Error.Failure("server.failure", message ?? "РћС€РёР±РєР° СЃРµСЂРІРµСЂР°");
     }
 
     public static Error Unauthorized()
     {
-        return Error.Authentication("unauthorized", "Требуется авторизация");
+        return Error.Authentication("unauthorized", "РўСЂРµР±СѓРµС‚СЃСЏ Р°РІС‚РѕСЂРёР·Р°С†РёСЏ");
     }
 
     public static Error Forbidden()
     {
-        return Error.Authorization("forbidden", "Доступ запрещён");
+        return Error.Authorization("forbidden", "Р”РѕСЃС‚СѓРї Р·Р°РїСЂРµС‰С‘РЅ");
     }
 
     public static Error InvalidOperation(string? message = null)
     {
-        return Error.Validation("invalid.operation", message ?? "Недопустимая операция");
+        return Error.Validation("invalid.operation", message ?? "РќРµРґРѕРїСѓСЃС‚РёРјР°СЏ РѕРїРµСЂР°С†РёСЏ");
     }
 
     public static Error OutOfRange(string? fieldName = null, object? min = null, object? max = null)
     {
-        string label = fieldName ?? "Значение";
+        string label = fieldName ?? "Р—РЅР°С‡РµРЅРёРµ";
 
         if (min != null && max != null)
-            return Error.Validation("value.out.of.range", $"{label}: от {min} до {max}");
+            return Error.Validation("value.out.of.range", $"{label}: РѕС‚ {min} РґРѕ {max}");
 
         if (min != null)
-            return Error.Validation("value.out.of.range", $"{label}: минимум {min}");
+            return Error.Validation("value.out.of.range", $"{label}: РјРёРЅРёРјСѓРј {min}");
 
         if (max != null)
-            return Error.Validation("value.out.of.range", $"{label}: максимум {max}");
+            return Error.Validation("value.out.of.range", $"{label}: РјР°РєСЃРёРјСѓРј {max}");
 
-        return Error.Validation("value.out.of.range", $"{label} вне диапазона");
+        return Error.Validation("value.out.of.range", $"{label} РІРЅРµ РґРёР°РїР°Р·РѕРЅР°");
     }
 
     public static Error InvalidFormat(string? fieldName = null)
     {
-        string label = fieldName ?? "Значение";
-        return Error.Validation("invalid.format", $"{label}: неверный формат");
+        string label = fieldName ?? "Р—РЅР°С‡РµРЅРёРµ";
+        return Error.Validation("invalid.format", $"{label}: РЅРµРІРµСЂРЅС‹Р№ С„РѕСЂРјР°С‚");
     }
 }

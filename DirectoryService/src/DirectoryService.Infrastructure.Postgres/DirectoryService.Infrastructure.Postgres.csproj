@@ -1,10 +1,16 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>net9.0</TargetFramework>
+    <TargetFramework>net10.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
   </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Новая папка\**" />
+    <EmbeddedResource Remove="Новая папка\**" />
+    <None Remove="Новая папка\**" />
+  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Dapper" Version="2.1.66" />
@@ -22,10 +28,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DirectoryService.Application\DirectoryService.Application.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Новая папка\" />
   </ItemGroup>
 
 </Project>

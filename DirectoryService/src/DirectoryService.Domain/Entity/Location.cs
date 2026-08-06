@@ -22,7 +22,7 @@ public sealed class Location : Shared.Entity<LocationId>, ISoftDeletableMutable
 
     private Location(LocationId id) : base(id) { }
 
-    public Location(LocationId id, Address address, IANACode timezone) : base(id)
+    public Location(LocationId id, LocationName name, Address address, IANACode timezone) : base(id)
     {
         Address = address;
         Timezone = timezone;

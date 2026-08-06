@@ -1,6 +1,4 @@
 ﻿using DirectoryService.Application.Endpoints;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using System.Reflection;
 
@@ -28,7 +26,7 @@ public static class EndpointsExtensions
 
         foreach (var endpoint in endpoints)
         {
-            endpoint.MapEndpoint(app);
+            endpoint.MapEndpoint(builder);
         }
 
         return app;
