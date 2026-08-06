@@ -22,7 +22,10 @@ public sealed class DepartmentConfiguration : IEntityTypeConfiguration<Departmen
             .ValueGeneratedNever();
 
         builder.Property(x => x.ParentId)
-            .HasColumnName("parent_id");
+            .HasColumnName("parent_id")
+            .HasConversion(
+                id => id!.Value,
+                value => DepartmentId.Create(value));
 
         builder.Property(x => x.Path)
             .HasColumnName("path")
@@ -75,6 +78,11 @@ public sealed class DepartmentConfiguration : IEntityTypeConfiguration<Departmen
 
         builder.Navigation(x => x.Positions)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
+
+        builder.HasOne<Department>()
+            .WithMany()
+            .HasForeignKey(x => x.ParentId)
+            .OnDelete(DeleteBehavior.Restrict);
 
         builder.HasIndex(x => x.Path);
         builder.HasIndex(x => x.ParentId);

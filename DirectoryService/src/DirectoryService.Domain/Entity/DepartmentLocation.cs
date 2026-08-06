@@ -13,7 +13,7 @@ public sealed class DepartmentLocation
         LocationId = locationId;
     }
 
-    public Guid Id { get; }
+    public Guid Id { get; private set; }
 
     public DepartmentId DepartmentId { get; private set; } = null!;
 

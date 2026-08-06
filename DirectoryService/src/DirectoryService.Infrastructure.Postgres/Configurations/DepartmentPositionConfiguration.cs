@@ -11,9 +11,11 @@ public sealed class DepartmentPositionConfiguration : IEntityTypeConfiguration<D
     {
         builder.ToTable("department_positions");
 
-        builder.Ignore(x => x.Id);
+        builder.HasKey(x => x.Id);
 
-        builder.HasKey(x => new { x.DepartmentId, x.PositionId });
+        builder.Property(x => x.Id)
+            .HasColumnName("id")
+            .ValueGeneratedNever();
 
         builder.Property(x => x.DepartmentId)
             .HasColumnName("department_id")
@@ -28,6 +30,9 @@ public sealed class DepartmentPositionConfiguration : IEntityTypeConfiguration<D
                 id => id.Value,
                 value => PositionId.Create(value))
             .ValueGeneratedNever();
+
+        builder.HasIndex(x => new { x.DepartmentId, x.PositionId })
+            .IsUnique();
 
         builder.HasOne<Department>()
             .WithMany(x => x.Positions)
