@@ -26,6 +26,7 @@ public sealed class Location : Shared.Entity<LocationId>, ISoftDeletableMutable
     {
         Address = address;
         Timezone = timezone;
+        Name = name;
 
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;

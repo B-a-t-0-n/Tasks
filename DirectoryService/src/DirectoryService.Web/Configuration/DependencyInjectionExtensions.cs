@@ -14,6 +14,7 @@ public static class DependencyInjectionExtensions
         services.AddInfrastructurePostgres(configuration);
         return services
             .AddSerilogLogging(configuration)
+            .AddEndpointsApiExplorer()
             .AddSwaggerGen()
             .AddEndpoints(typeof(IEndpoint).Assembly);
         ;

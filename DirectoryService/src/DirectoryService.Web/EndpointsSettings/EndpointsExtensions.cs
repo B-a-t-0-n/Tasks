@@ -26,7 +26,7 @@ public static class EndpointsExtensions
 
         foreach (var endpoint in endpoints)
         {
-            endpoint.MapEndpoint(builder);
+            endpoint.MapEndpoint(builder ?? app);
         }
 
         return app;

@@ -70,16 +70,6 @@ public sealed class DepartmentConfiguration : IEntityTypeConfiguration<Departmen
                 .IsRequired();
         });
 
-        builder.HasMany(x => x.Locations)
-            .WithOne()
-            .HasForeignKey(x => x.DepartmentId)
-            .OnDelete(DeleteBehavior.Cascade);
-
-        builder.HasMany(x => x.Positions)
-            .WithOne()
-            .HasForeignKey(x => x.DepartmentId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.Navigation(x => x.Locations)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
 

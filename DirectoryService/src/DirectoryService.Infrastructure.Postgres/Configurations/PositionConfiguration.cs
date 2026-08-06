@@ -51,11 +51,6 @@ public sealed class PositionConfiguration : IEntityTypeConfiguration<Position>
                 .HasMaxLength(Description.MAX_HIGHT_NAME_LENGTH);
         });
 
-        builder.HasMany(x => x.Departments)
-            .WithOne()
-            .HasForeignKey(x => x.PositionId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.Navigation(x => x.Departments)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
 

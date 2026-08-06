@@ -76,11 +76,6 @@ public sealed class LocationConfiguration : IEntityTypeConfiguration<Location>
                 .IsRequired();
         });
 
-        builder.HasMany(x => x.Departments)
-            .WithOne()
-            .HasForeignKey(x => x.LocationId)
-            .OnDelete(DeleteBehavior.Cascade);
-
         builder.Navigation(x => x.Departments)
             .UsePropertyAccessMode(PropertyAccessMode.Field);
 
