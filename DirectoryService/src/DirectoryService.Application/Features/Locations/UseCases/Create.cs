@@ -85,7 +85,9 @@ public sealed class CreateLocationHandler(
 
         await _repository.Add(location, ct);
 
-        await _transactionManager.SaveChangesAsync(ct);
+        var saveResult = await _transactionManager.SaveChangesAsync(ct);
+        if (saveResult.IsFailure)
+            return saveResult.Error;
 
         _logger.LogInformation("created location with id {id}", location.Id);
 
