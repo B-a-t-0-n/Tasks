@@ -17,7 +17,7 @@ public sealed class GetDepartmentByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/departments/{id:guid}", async Task<EndpointResult<DepartmentResponce?>> (
+        app.MapGet("/departments/{id:guid}", async Task<EndpointResult<DepartmentResponse?>> (
             [FromRoute] Guid id,
             [FromServices] GetDepartmentByIdHandler handler,
             CancellationToken ct) =>
@@ -30,14 +30,14 @@ public sealed class GetDepartmentByIdEndpoint : IEndpoint
     }
 }
 
-public sealed class GetDepartmentByIdHandler(ILogger<GetDepartmentByIdHandler> logger) : IQueryHandlerWithResult<DepartmentResponce?, GetDepartmentByIdQuery>
+public sealed class GetDepartmentByIdHandler(ILogger<GetDepartmentByIdHandler> logger) : IQueryHandlerWithResult<DepartmentResponse?, GetDepartmentByIdQuery>
 {
     private readonly ILogger<GetDepartmentByIdHandler> _logger = logger;
 
-    public async Task<Result<DepartmentResponce?, Error>> Handle(GetDepartmentByIdQuery query, CancellationToken ct)
+    public async Task<Result<DepartmentResponse?, Error>> Handle(GetDepartmentByIdQuery query, CancellationToken ct)
     {
         _logger.LogInformation("Handle method get");
 
-        return new DepartmentResponce(Guid.CreateVersion7(), "", "", Guid.CreateVersion7(), "", 1, DateTime.UtcNow, DateTime.UtcNow);
+        return new DepartmentResponse(Guid.CreateVersion7(), "", "", Guid.CreateVersion7(), "", 1, DateTime.UtcNow, DateTime.UtcNow);
     }
 }

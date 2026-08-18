@@ -17,7 +17,7 @@ public sealed class GetDepartmentsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/departments", async Task<EndpointResult<IEnumerable<DepartmentResponce>>> (
+        app.MapGet("/departments", async Task<EndpointResult<IEnumerable<DepartmentResponse>>> (
             [FromServices] GetDepartmentsHandler handler,
             CancellationToken ct) =>
         {
@@ -29,15 +29,15 @@ public sealed class GetDepartmentsEndpoint : IEndpoint
     }
 }
 
-public sealed class GetDepartmentsHandler(ILogger<GetDepartmentsHandler> logger) : IQueryHandlerWithResult<IEnumerable<DepartmentResponce>, GetDepartmentsQuery>
+public sealed class GetDepartmentsHandler(ILogger<GetDepartmentsHandler> logger) : IQueryHandlerWithResult<IEnumerable<DepartmentResponse>, GetDepartmentsQuery>
 {
     private readonly ILogger<GetDepartmentsHandler> _logger = logger;
 
-    public async Task<Result<IEnumerable<DepartmentResponce>, Error>> Handle(GetDepartmentsQuery query, CancellationToken ct)
+    public async Task<Result<IEnumerable<DepartmentResponse>, Error>> Handle(GetDepartmentsQuery query, CancellationToken ct)
     {
         _logger.LogInformation("Handle method get");
 
-        var list = new List<DepartmentResponce>();
+        var list = new List<DepartmentResponse>();
 
         return list;
     }

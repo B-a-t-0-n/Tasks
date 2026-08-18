@@ -1,6 +1,6 @@
 ﻿namespace DirectoryService.Contracts.Response;
 
-public sealed record PositionResponce(
+public sealed record PositionResponse(
     Guid Id,
     string Name,
     string? Description,

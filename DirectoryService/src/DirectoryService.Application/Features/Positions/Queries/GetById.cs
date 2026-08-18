@@ -17,7 +17,7 @@ public sealed class GetPositionByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/positions/{id:guid}", async Task<EndpointResult<PositionResponce?>> (
+        app.MapGet("/positions/{id:guid}", async Task<EndpointResult<PositionResponse?>> (
             [FromRoute] Guid id,
             [FromServices] GetPositionByIdHandler handler,
             CancellationToken ct) =>
@@ -30,14 +30,14 @@ public sealed class GetPositionByIdEndpoint : IEndpoint
     }
 }
 
-public sealed class GetPositionByIdHandler(ILogger<GetPositionByIdHandler> logger) : IQueryHandlerWithResult<PositionResponce?, GetPositionByIdQuery>
+public sealed class GetPositionByIdHandler(ILogger<GetPositionByIdHandler> logger) : IQueryHandlerWithResult<PositionResponse?, GetPositionByIdQuery>
 {
     private readonly ILogger<GetPositionByIdHandler> _logger = logger;
 
-    public async Task<Result<PositionResponce?, Error>> Handle(GetPositionByIdQuery query, CancellationToken ct)
+    public async Task<Result<PositionResponse?, Error>> Handle(GetPositionByIdQuery query, CancellationToken ct)
     {
         _logger.LogInformation("Handle method get");
 
-        return new PositionResponce(Guid.CreateVersion7(), "", "", DateTime.UtcNow, DateTime.UtcNow);
+        return new PositionResponse(Guid.CreateVersion7(), "", "", DateTime.UtcNow, DateTime.UtcNow);
     }
 }

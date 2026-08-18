@@ -17,7 +17,7 @@ public sealed class GetPositionsEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/positions", async Task<EndpointResult<IEnumerable<PositionResponce>>> (
+        app.MapGet("/positions", async Task<EndpointResult<IEnumerable<PositionResponse>>> (
             [FromServices] GetPositionsHandler handler,
             CancellationToken ct) =>
         {
@@ -29,15 +29,15 @@ public sealed class GetPositionsEndpoint : IEndpoint
     }
 }
 
-public sealed class GetPositionsHandler(ILogger<GetPositionsHandler> logger) : IQueryHandlerWithResult<IEnumerable<PositionResponce>, GetPositionsQuery>
+public sealed class GetPositionsHandler(ILogger<GetPositionsHandler> logger) : IQueryHandlerWithResult<IEnumerable<PositionResponse>, GetPositionsQuery>
 {
     private readonly ILogger<GetPositionsHandler> _logger = logger;
 
-    public async Task<Result<IEnumerable<PositionResponce>, Error>> Handle(GetPositionsQuery query, CancellationToken ct)
+    public async Task<Result<IEnumerable<PositionResponse>, Error>> Handle(GetPositionsQuery query, CancellationToken ct)
     {
         _logger.LogInformation("Handle method get");
 
-        var list = new List<PositionResponce>();
+        var list = new List<PositionResponse>();
 
         return list;
     }
