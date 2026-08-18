@@ -1,5 +1,5 @@
-﻿using DirectoryService.Application.Endpoints;
-using DirectoryService.Application.Features.Tests;
+﻿using DirectoryService.Application;
+using DirectoryService.Application.Endpoints;
 using DirectoryService.Infrastructure.Postgres;
 using DirectoryService.Web.EndpointsSettings;
 using Serilog;
@@ -10,9 +10,9 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddConfiguration(this IServiceCollection services, IConfiguration configuration)
     {
-        services.AddScoped<CreateHandler>();
-        services.AddInfrastructurePostgres(configuration);
         return services
+            .AddApplication(configuration)
+            .AddInfrastructurePostgres(configuration)
             .AddSerilogLogging(configuration)
             .AddEndpointsApiExplorer()
             .AddSwaggerGen()

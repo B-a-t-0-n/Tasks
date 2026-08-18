@@ -6,7 +6,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DirectoryService.Infrastructure.Postgres;
 
-public static class DependencyInjection
+public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddInfrastructurePostgres(this IServiceCollection services, IConfiguration configuration)
     {
