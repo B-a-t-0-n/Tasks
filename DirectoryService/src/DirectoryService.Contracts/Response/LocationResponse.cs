@@ -2,7 +2,7 @@
 
 namespace DirectoryService.Contracts.Response;
 
-public sealed record LocationResponce(
+public sealed record LocationResponse(
     Guid Id,
     string Name,
     AddressDTO Address,

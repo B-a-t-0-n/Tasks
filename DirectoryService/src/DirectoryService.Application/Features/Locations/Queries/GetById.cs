@@ -19,7 +19,7 @@ public sealed class GetLocationByIdEndpoint : IEndpoint
 {
     public void MapEndpoint(IEndpointRouteBuilder app)
     {
-        app.MapGet("/locations/{id:guid}", async Task<EndpointResult<LocationResponce?>> (
+        app.MapGet("/locations/{id:guid}", async Task<EndpointResult<LocationResponse?>> (
             [FromRoute] Guid id,
             [FromServices] GetLocationByIdHandler handler,
             CancellationToken ct) =>
@@ -32,14 +32,14 @@ public sealed class GetLocationByIdEndpoint : IEndpoint
     }
 }
 
-public sealed class GetLocationByIdHandler(ILogger<GetLocationByIdHandler> logger) : IQueryHandlerWithResult<LocationResponce?, GetLocationByIdQuery>
+public sealed class GetLocationByIdHandler(ILogger<GetLocationByIdHandler> logger) : IQueryHandlerWithResult<LocationResponse?, GetLocationByIdQuery>
 {
     private readonly ILogger<GetLocationByIdHandler> _logger = logger;
 
-    public async Task<Result<LocationResponce?, Error>> Handle(GetLocationByIdQuery query, CancellationToken ct)
+    public async Task<Result<LocationResponse?, Error>> Handle(GetLocationByIdQuery query, CancellationToken ct)
     {
         _logger.LogInformation("Handle method get");
 
-        return new LocationResponce(Guid.CreateVersion7(), "", new AddressDTO("", "", "", "", ""), "", DateTime.UtcNow, DateTime.UtcNow);
+        return new LocationResponse(Guid.CreateVersion7(), "", new AddressDTO("", "", "", "", ""), "", DateTime.UtcNow, DateTime.UtcNow);
     }
 }
