@@ -10,5 +10,5 @@ public interface ILocationRepository
     Task<Result<Location, Error>> GetByAsync(
         Expression<Func<Location, bool>> predicate,
         CancellationToken cancellationToken = default);
-    Task<Guid> Add(Location location, CancellationToken cancellationToken = default);
+    Task Add(Location location, CancellationToken cancellationToken = default);
 }

@@ -1,4 +1,6 @@
-﻿using DirectoryService.Application.Features.Locations;
+﻿using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Features.Locations;
+using DirectoryService.Infrastructure.Postgres.Database;
 using DirectoryService.Infrastructure.Postgres.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -12,6 +14,8 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddInfrastructurePostgres(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<ITransactionManager, TransactionManager>();
+
         services.AddScoped<ILocationRepository, LocationRepository>();
 
         services.AddDbContextPool<DirectoryDbContext>((sp, options) =>

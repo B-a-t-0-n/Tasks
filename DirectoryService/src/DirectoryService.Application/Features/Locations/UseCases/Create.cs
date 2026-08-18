@@ -2,7 +2,6 @@
 using DirectoryService.Application.Abstractions;
 using DirectoryService.Application.Endpoints;
 using DirectoryService.Application.Validation;
-using DirectoryService.Contracts.DTOs;
 using DirectoryService.Contracts.Requests.Locations;
 using DirectoryService.Domain.Entity;
 using DirectoryService.Domain.Shared;
@@ -47,10 +46,12 @@ public sealed class CreateLocationValidator : AbstractValidator<CreateLocationCo
 }
 
 public sealed class CreateLocationHandler(
+    ITransactionManager transactionManager,
     ILocationRepository repository,
     ILogger<CreateLocationHandler> logger,
     IValidator<CreateLocationCommand> validator) : ICommandHandler<Guid ,CreateLocationCommand>
 {
+    private readonly ITransactionManager _transactionManager = transactionManager;
     private readonly ILocationRepository _repository = repository;
     private readonly ILogger<CreateLocationHandler> _logger = logger;
     private readonly IValidator<CreateLocationCommand> _validator = validator;
@@ -67,9 +68,9 @@ public sealed class CreateLocationHandler(
 
         var name = LocationName.Create(command.Request.Name).Value;
 
-        var locationResult = await _repository.GetByAsync(l => l.Name == name, ct);
-        if (locationResult.IsFailure)
-            return locationResult.Error;
+        var locationResult = await _repository.GetByAsync(l => l.Name.Value == name.Value, ct);
+        if (locationResult.IsSuccess)
+            return GeneralErrors.AlreadyExists("Локация", name.Value);
 
         var address = Address.Create(
             command.Request.Address.Street,
@@ -82,7 +83,9 @@ public sealed class CreateLocationHandler(
 
         var location = new Location(id, name, address, timezone);
 
-        var result = _repository.Add(location, ct);
+        await _repository.Add(location, ct);
+
+        await _transactionManager.SaveChangesAsync(ct);
 
         _logger.LogInformation("created location with id {id}", location.Id);
 
