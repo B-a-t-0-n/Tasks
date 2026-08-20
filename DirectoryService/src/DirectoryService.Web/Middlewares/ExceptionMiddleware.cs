@@ -29,8 +29,6 @@ public class ExceptionMiddleware
 
     private async Task HandleExceptionAsync(HttpContext context, Exception exception)
     {
-        _logger.LogError(exception, "Exception was thrown in directory service");
-
         (int statusCode, Error error) = exception switch
         {
             NotFoundException ex => (StatusCodes.Status404NotFound, ex.Error),
@@ -47,6 +45,11 @@ public class ExceptionMiddleware
 
             _ => (StatusCodes.Status500InternalServerError, Error.Failure("server.internal", exception.Message))
         };
+
+        if (statusCode >= StatusCodes.Status500InternalServerError)
+            _logger.LogError(exception, "Request failed with status code {StatusCode}", statusCode);
+        else
+            _logger.LogWarning(exception, "Request failed with status code {StatusCode}", statusCode);
 
         var envelope = Envelope.Fail(error);
         context.Response.ContentType = "application/json";

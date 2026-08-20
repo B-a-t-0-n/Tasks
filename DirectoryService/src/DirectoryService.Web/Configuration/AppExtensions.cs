@@ -10,6 +10,7 @@ public static class AppExtensions
     {
         app.UseRequestCorrelationId();
         app.UseSerilogRequestLogging();
+        app.UseExceptionMiddleware();
 
         app.UseSwagger();
         app.UseSwaggerUI();

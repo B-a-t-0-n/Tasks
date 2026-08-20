@@ -2,6 +2,7 @@
 using DirectoryService.Application.Features.Locations;
 using DirectoryService.Domain.Entity;
 using DirectoryService.Domain.Shared;
+using DirectoryService.Domain.ValueObjects.IDs;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -28,5 +29,25 @@ public class LocationRepository : ILocationRepository
             return GeneralErrors.NotFound(null, "локацию");
 
         return location;
+    }
+
+    public async Task<UnitResult<Error>> AnyByIds(
+        IEnumerable<Guid> ids,
+        CancellationToken cancellationToken = default)
+    {
+        LocationId[] locationIds = ids
+            .Distinct()
+            .Select(LocationId.Create)
+            .ToArray();
+
+        var existingLocationsCount = await _dbContext.Locations
+            .CountAsync(
+                location => !location.IsDeleted && locationIds.Contains(location.Id),
+                cancellationToken);
+
+        if (existingLocationsCount != locationIds.Length)
+            return GeneralErrors.NotFound(entityName: "одну или несколько локаций");
+
+        return UnitResult.Success<Error>();
     }
 }

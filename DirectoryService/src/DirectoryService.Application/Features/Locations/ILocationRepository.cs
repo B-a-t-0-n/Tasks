@@ -11,4 +11,6 @@ public interface ILocationRepository
         Expression<Func<Location, bool>> predicate,
         CancellationToken cancellationToken = default);
     Task Add(Location location, CancellationToken cancellationToken = default);
+
+    Task<UnitResult<Error>> AnyByIds(IEnumerable<Guid> ids, CancellationToken cancellationToken = default);
 }

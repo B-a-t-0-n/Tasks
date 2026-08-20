@@ -1,4 +1,5 @@
 ﻿using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Features.Departments;
 using DirectoryService.Application.Features.Locations;
 using DirectoryService.Infrastructure.Postgres.Database;
 using DirectoryService.Infrastructure.Postgres.Repositories;
@@ -17,6 +18,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<ITransactionManager, TransactionManager>();
 
         services.AddScoped<ILocationRepository, LocationRepository>();
+        services.AddScoped<IDepartmentRepository, DepartmentRepository>();
 
         services.AddDbContextPool<DirectoryDbContext>((sp, options) =>
         {
