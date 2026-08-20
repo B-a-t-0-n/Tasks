@@ -81,6 +81,20 @@ public static class GeneralErrors
         return Error.Failure("database.error", "Ошибка базы данных");
     }
 
+    public static Error DatabaseTransactionError()
+    {
+        return Error.Failure("database.transaction.error", "Ошибка базы данных не удалось начать транзакцию");
+    }
+    public static Error DatabaseCommitError()
+    {
+        return Error.Failure("database.commit.error", "Ошибка базы данных не удалось сделать commit");
+    }
+
+    public static Error DatabaseRollbackError()
+    {
+        return Error.Failure("database.rollback.error", "Ошибка базы данных не удалось сделать rollback");
+    }
+
     public static Error Failure(string? message = null)
     {
         return Error.Failure("server.failure", message ?? "Ошибка сервера");

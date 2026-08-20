@@ -1,4 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using DirectoryService.Application.Abstractions;
+using DirectoryService.Application.Features.Departments;
+using DirectoryService.Application.Features.Locations;
+using DirectoryService.Infrastructure.Postgres.Database;
+using DirectoryService.Infrastructure.Postgres.Repositories;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -10,6 +15,11 @@ public static class DependencyInjectionExtensions
 {
     public static IServiceCollection AddInfrastructurePostgres(this IServiceCollection services, IConfiguration configuration)
     {
+        services.AddScoped<ITransactionManager, TransactionManager>();
+
+        services.AddScoped<ILocationRepository, LocationRepository>();
+        services.AddScoped<IDepartmentRepository, DepartmentRepository>();
+
         services.AddDbContextPool<DirectoryDbContext>((sp, options) =>
         {
             string? connectionString = configuration.GetConnectionString(Constants.DATABASE);

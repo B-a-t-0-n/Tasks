@@ -15,7 +15,7 @@ public class RequestCorrelationIdMiddleware
         _next = next;
     }
 
-    public Task Invoke(HttpContext context)
+    public async Task InvokeAsync(HttpContext context)
     {
         context.Request.Headers.TryGetValue(CORRELATION_ID_HEADER_NAME, out StringValues correlationIdValues);
 
@@ -23,7 +23,7 @@ public class RequestCorrelationIdMiddleware
 
         using (LogContext.PushProperty(CORRELATION_ID, correlationId))
         {
-            return _next(context);
+            await _next(context);
         }
     }
 }

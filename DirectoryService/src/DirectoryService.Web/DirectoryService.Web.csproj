@@ -6,6 +6,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     <DockerfileContext>..\..</DockerfileContext>
+    <UserSecretsId>DirectoryService-Web-c09fe157-850e-4b0c-b677-b68ae5abaf09</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

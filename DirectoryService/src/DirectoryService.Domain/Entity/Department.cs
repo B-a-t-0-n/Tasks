@@ -1,4 +1,5 @@
-﻿using DirectoryService.Domain.Shared;
+﻿using CSharpFunctionalExtensions;
+using DirectoryService.Domain.Shared;
 using DirectoryService.Domain.ValueObjects;
 using DirectoryService.Domain.ValueObjects.IDs;
 
@@ -35,7 +36,8 @@ public sealed class Department : Shared.Entity<DepartmentId>, ISoftDeletableMuta
         Identifier identifier,
         DepartmentId? parentId,
         string path,
-        Depth depth) : base(id) 
+        Depth depth,
+        IEnumerable<DepartmentLocation> locations) : base(id) 
     { 
         Name = name;
         Identifier = identifier;
@@ -44,6 +46,7 @@ public sealed class Department : Shared.Entity<DepartmentId>, ISoftDeletableMuta
         Depth = depth;
         CreatedAt = DateTime.UtcNow;
         UpdatedAt = DateTime.UtcNow;
+        _locations = locations.ToList();
     }
 
     public void MarkAsDeleted()
